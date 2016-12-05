@@ -5,8 +5,14 @@
  */
 package mephilog;
 
+import java.awt.event.ItemEvent;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -14,14 +20,15 @@ import javax.swing.table.DefaultTableModel;
  */
 public class MainFrame extends javax.swing.JFrame {
 
-    private String wheres[];
+    private String[] wheres;
 
     /**
      * Creates new form MainFrame
      */
     public MainFrame() {
+        wheres = new String[3];
         initComponents();
-        this.Update();
+        this.UpdateTable();
     }
 
     /**
@@ -33,39 +40,53 @@ public class MainFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jComboBox1 = new javax.swing.JComboBox<>();
+        StudentFilter = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
-        jComboBox3 = new javax.swing.JComboBox<>();
-        jComboBox4 = new javax.swing.JComboBox<>();
-        jLabel4 = new javax.swing.JLabel();
+        GroupFilter = new javax.swing.JComboBox<>();
+        LessonFilter = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         ScoreTable = new javax.swing.JTable();
         jProgressBar1 = new javax.swing.JProgressBar();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Все", " " }));
+        StudentFilter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Все", " " }));
+        StudentFilter.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                StudentFilterItemStateChanged(evt);
+            }
+        });
+        StudentFilter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                StudentFilterActionPerformed(evt);
+            }
+        });
 
-        jLabel1.setText("Год поступления");
+        jLabel1.setText("Студент");
 
         jLabel2.setText("Группа");
 
         jLabel3.setText("Предмет");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Все" }));
+        GroupFilter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Все" }));
+        GroupFilter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                GroupFilterActionPerformed(evt);
+            }
+        });
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Все" }));
-
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Все" }));
-
-        jLabel4.setText("Преподаватель");
+        LessonFilter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Все" }));
+        LessonFilter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LessonFilterActionPerformed(evt);
+            }
+        });
 
         ScoreTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -101,17 +122,17 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setText("Преподаватели");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-
         jButton5.setText("Студенты");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton5ActionPerformed(evt);
+            }
+        });
+
+        jButton4.setText("Сбросить");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
             }
         });
 
@@ -120,32 +141,34 @@ public class MainFrame extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jScrollPane1)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel2))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel3))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel4)))
-                        .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(47, 47, 47)
+                        .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 633, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(StudentFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(GroupFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(LessonFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -153,25 +176,22 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel1)
+                    .addComponent(jButton1)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel2)
-                        .addComponent(jLabel3)
-                        .addComponent(jLabel4))
-                    .addComponent(jButton1))
+                        .addComponent(jLabel1)
+                        .addComponent(jLabel3)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2))
+                    .addComponent(StudentFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(GroupFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(LessonFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2)
+                    .addComponent(jButton4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 406, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton5)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -186,13 +206,56 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
-
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void StudentFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StudentFilterActionPerformed
+
+    }//GEN-LAST:event_StudentFilterActionPerformed
+
+    private void GroupFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GroupFilterActionPerformed
+        // TODO add your handling code here:
+        if (GroupFilter.getSelectedIndex() > 0) {
+            this.wheres[1] = "groups.name ='" + GroupFilter.getSelectedItem().toString() + "'";
+            this.UpdateTable();
+        } else if (GroupFilter.getSelectedIndex() == 0) {
+            this.wheres[1] = "";
+            this.UpdateTable();
+        }
+
+    }//GEN-LAST:event_GroupFilterActionPerformed
+
+    private void LessonFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LessonFilterActionPerformed
+        // TODO add your handling code here:
+        if (LessonFilter.getSelectedIndex() > 0) {
+            this.wheres[2] = "lessons.name ='" + LessonFilter.getSelectedItem().toString() + "'";
+            this.UpdateTable();
+        } else if (LessonFilter.getSelectedIndex() == 0) {
+            this.wheres[2] = "";
+            this.UpdateTable();
+        }
+
+    }//GEN-LAST:event_LessonFilterActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        this.wheres = new String[3];
+        this.UpdateTable();
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void StudentFilterItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_StudentFilterItemStateChanged
+        // TODO add your handling code here:
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            if (StudentFilter.getSelectedIndex() > 0) {
+                this.wheres[0] = "students.name='" + StudentFilter.getSelectedItem().toString() + "'";
+                this.UpdateTable();
+            } else if (StudentFilter.getSelectedIndex() == 0) {
+                this.wheres[0] = "";
+                this.UpdateTable();
+            }
+        }
+    }//GEN-LAST:event_StudentFilterItemStateChanged
 
     /**
      * @param args the command line arguments
@@ -229,18 +292,56 @@ public class MainFrame extends javax.swing.JFrame {
         });
     }
 
-    private void Update() {
-        ResultSet rs;
+    private void UpdateTable() {
+        ((DefaultTableModel) ScoreTable.getModel()).setRowCount(0);
         String[] newRow = new String[5];
-        rs = MephiLog.db.query("SELECT students.name,groups.name,lessons.name,score,date FROM mephi.scores\n"
-                + "join students on (students.id = student_id)\n"
-                + "join lessons on (lessons.id = lesson_id)\n"
-                + "join groups on (groups.id = group_id)");
+        if (this.StudentFilter.getSelectedIndex() <= 0) {
+            this.StudentFilter.removeAllItems();
+            this.StudentFilter.addItem("Все");
+        }
+        if (this.GroupFilter.getSelectedIndex() <= 0) {
+            this.GroupFilter.removeAllItems();
+            this.GroupFilter.addItem("Все");
+        }
+        if (this.LessonFilter.getSelectedIndex() <= 0) {
+            this.LessonFilter.removeAllItems();
+            this.LessonFilter.addItem("Все");
+        }
+        ArrayList<String> wheresAL = new ArrayList<>();
+        for (String whereStr : this.wheres) {
+            if (!whereStr.isEmpty()) {
+                wheresAL.add(whereStr);
+            }
+        }
+        String wheresStr = String.join(" AND ", wheresAL);
+
+        String queryStr = "SELECT students.name,groups.name,lessons.name,score,date FROM mephi.scores "
+                + "join students on (students.id = student_id) "
+                + "join lessons on (lessons.id = lesson_id) "
+                + "join groups on (groups.id = group_id) ";
+
+        if (!wheresStr.isEmpty()) {
+            queryStr = queryStr + "WHERE " + wheresStr;
+        }
+        ResultSet rs = MephiLog.db.query(queryStr);
+
         try {
             while (rs.next()) {
                 newRow[0] = rs.getString("students.name");
+
+                if (((DefaultComboBoxModel) this.StudentFilter.getModel()).getIndexOf(newRow[0]) == -1) {
+                    this.StudentFilter.addItem(newRow[0]);
+                }
                 newRow[1] = rs.getString("groups.name");
+
+                if (((DefaultComboBoxModel) this.GroupFilter.getModel()).getIndexOf(newRow[1]) == -1) {
+                    this.GroupFilter.addItem(newRow[1]);
+                }
                 newRow[2] = rs.getString("lessons.name");
+
+                if (((DefaultComboBoxModel) this.LessonFilter.getModel()).getIndexOf(newRow[2]) == -1) {
+                    this.LessonFilter.addItem(newRow[2]);
+                }
                 newRow[3] = rs.getString("score");
                 newRow[4] = rs.getString("date");
                 this.addRow(newRow);
@@ -257,19 +358,17 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> GroupFilter;
+    private javax.swing.JComboBox<String> LessonFilter;
     private javax.swing.JTable ScoreTable;
+    private javax.swing.JComboBox<String> StudentFilter;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
-    private javax.swing.JComboBox<String> jComboBox4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
