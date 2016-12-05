@@ -5,17 +5,23 @@
  */
 package mephilog;
 
+import java.sql.ResultSet;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author vlad
  */
 public class MainFrame extends javax.swing.JFrame {
 
+    private String wheres[];
+
     /**
      * Creates new form MainFrame
      */
     public MainFrame() {
         initComponents();
+        this.Update();
     }
 
     /**
@@ -36,7 +42,7 @@ public class MainFrame extends javax.swing.JFrame {
         jComboBox4 = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        ScoreTable = new javax.swing.JTable();
         jProgressBar1 = new javax.swing.JProgressBar();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -61,22 +67,19 @@ public class MainFrame extends javax.swing.JFrame {
 
         jLabel4.setText("Преподаватель");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        ScoreTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "ФИО", "Группа", "Предмет", "Количество баллов"
+                "ФИО", "Группа", "Предмет", "Количество баллов", "Дата"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, true
+                false, false, false, true, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -87,7 +90,7 @@ public class MainFrame extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(ScoreTable);
 
         jButton1.setText("Группы");
 
@@ -226,7 +229,35 @@ public class MainFrame extends javax.swing.JFrame {
         });
     }
 
+    private void Update() {
+        ResultSet rs;
+        String[] newRow = new String[5];
+        rs = MephiLog.db.query("SELECT students.name,groups.name,lessons.name,score,date FROM mephi.scores\n"
+                + "join students on (students.id = student_id)\n"
+                + "join lessons on (lessons.id = lesson_id)\n"
+                + "join groups on (groups.id = group_id)");
+        try {
+            while (rs.next()) {
+                newRow[0] = rs.getString("students.name");
+                newRow[1] = rs.getString("groups.name");
+                newRow[2] = rs.getString("lessons.name");
+                newRow[3] = rs.getString("score");
+                newRow[4] = rs.getString("date");
+                this.addRow(newRow);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void addRow(String[] data) {
+        DefaultTableModel model = (DefaultTableModel) ScoreTable.getModel();
+        model.addRow(new Object[]{data[0], data[1], data[2], data[3], data[4]
+        });
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable ScoreTable;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -241,6 +272,5 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }

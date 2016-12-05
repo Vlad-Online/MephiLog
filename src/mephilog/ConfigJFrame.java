@@ -40,6 +40,7 @@ public class ConfigJFrame extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("MephiLog Auth");
         setLocationByPlatform(true);
 
         jLabel2.setText("Логин:");
@@ -128,6 +129,8 @@ public class ConfigJFrame extends javax.swing.JFrame {
         MephiLog.userPrefs.put("login", loginStr);
         MephiLog.userPrefs.put("password", passwordStr);
         MephiLog.db = new MephiDB(dbipStr, loginStr, passwordStr);
+        this.setVisible(false);
+        new MainFrame().setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

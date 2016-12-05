@@ -28,7 +28,6 @@ public class MephiLog {
         userPrefs = Preferences.userRoot().node("prefexample");
         db = null;
 
-        FileInputStream input = null;
         ConfigJFrame ConfigForm;
         String dbip = userPrefs.get("dbip", "127.0.0.1");
         String login = userPrefs.get("login", "admin");

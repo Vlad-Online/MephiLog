@@ -7,7 +7,9 @@ package mephilog;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  *
@@ -22,19 +24,30 @@ public class MephiDB {
         this.dbip = dbip;
         this.login = login;
         this.password = password;
-
         conn = null;
+
         try {
             conn = DriverManager.getConnection("jdbc:mysql://" + this.dbip + "/mephi?"
                     + "user=" + this.login + "&password=" + this.password);
-            // Do something with the Connection
-
+            this.conn = conn;
         } catch (SQLException ex) {
-            // handle any errors
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
         }
+    }
+
+    public ResultSet query(String query) {
+        ResultSet res = null;
+        Statement stmt;
+        try {
+            stmt = conn.createStatement();
+            res = stmt.executeQuery(query);
+            return res;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return res;
     }
 
 }
