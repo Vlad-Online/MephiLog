@@ -6,6 +6,7 @@
 package mephilog;
 
 import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import javax.swing.ComboBoxModel;
@@ -20,13 +21,14 @@ import javax.swing.table.TableModel;
  */
 public class MainFrame extends javax.swing.JFrame {
 
-    private String[] wheres;
+    private String[] wheres = {"", "", ""};
+    private boolean evtEnabled;
 
     /**
      * Creates new form MainFrame
      */
     public MainFrame() {
-        wheres = new String[3];
+        evtEnabled = false;
         initComponents();
         this.UpdateTable();
     }
@@ -48,20 +50,15 @@ public class MainFrame extends javax.swing.JFrame {
         LessonFilter = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         ScoreTable = new javax.swing.JTable();
-        jProgressBar1 = new javax.swing.JProgressBar();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(790, 530));
 
         StudentFilter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Все", " " }));
-        StudentFilter.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                StudentFilterItemStateChanged(evt);
-            }
-        });
         StudentFilter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 StudentFilterActionPerformed(evt);
@@ -111,6 +108,7 @@ public class MainFrame extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        ScoreTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
         jScrollPane1.setViewportView(ScoreTable);
 
         jButton1.setText("Группы");
@@ -141,15 +139,9 @@ public class MainFrame extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(47, 47, 47)
-                        .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 633, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(StudentFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -163,8 +155,9 @@ public class MainFrame extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(LessonFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jScrollPane1))
+                .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
                     .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -190,13 +183,9 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(jButton4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 406, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton5)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                    .addComponent(jButton5)
+                    .addComponent(jScrollPane1))
+                .addGap(19, 19, 19))
         );
 
         pack();
@@ -210,43 +199,17 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton5ActionPerformed
 
-    private void StudentFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StudentFilterActionPerformed
-
-    }//GEN-LAST:event_StudentFilterActionPerformed
-
-    private void GroupFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GroupFilterActionPerformed
-        // TODO add your handling code here:
-        if (GroupFilter.getSelectedIndex() > 0) {
-            this.wheres[1] = "groups.name ='" + GroupFilter.getSelectedItem().toString() + "'";
-            this.UpdateTable();
-        } else if (GroupFilter.getSelectedIndex() == 0) {
-            this.wheres[1] = "";
-            this.UpdateTable();
-        }
-
-    }//GEN-LAST:event_GroupFilterActionPerformed
-
-    private void LessonFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LessonFilterActionPerformed
-        // TODO add your handling code here:
-        if (LessonFilter.getSelectedIndex() > 0) {
-            this.wheres[2] = "lessons.name ='" + LessonFilter.getSelectedItem().toString() + "'";
-            this.UpdateTable();
-        } else if (LessonFilter.getSelectedIndex() == 0) {
-            this.wheres[2] = "";
-            this.UpdateTable();
-        }
-
-    }//GEN-LAST:event_LessonFilterActionPerformed
-
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
-        this.wheres = new String[3];
+        StudentFilter.setSelectedIndex(0);
+        GroupFilter.setSelectedIndex(0);
+        LessonFilter.setSelectedIndex(0);
         this.UpdateTable();
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    private void StudentFilterItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_StudentFilterItemStateChanged
+    private void StudentFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StudentFilterActionPerformed
         // TODO add your handling code here:
-        if (evt.getStateChange() == ItemEvent.SELECTED) {
+        if (evtEnabled == true) {
             if (StudentFilter.getSelectedIndex() > 0) {
                 this.wheres[0] = "students.name='" + StudentFilter.getSelectedItem().toString() + "'";
                 this.UpdateTable();
@@ -255,7 +218,33 @@ public class MainFrame extends javax.swing.JFrame {
                 this.UpdateTable();
             }
         }
-    }//GEN-LAST:event_StudentFilterItemStateChanged
+    }//GEN-LAST:event_StudentFilterActionPerformed
+
+    private void GroupFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GroupFilterActionPerformed
+        // TODO add your handling code here:
+        if (evtEnabled == true) {
+            if (GroupFilter.getSelectedIndex() > 0) {
+                this.wheres[1] = "groups.name ='" + GroupFilter.getSelectedItem().toString() + "'";
+                this.UpdateTable();
+            } else if (GroupFilter.getSelectedIndex() == 0) {
+                this.wheres[1] = "";
+                this.UpdateTable();
+            }
+        }
+    }//GEN-LAST:event_GroupFilterActionPerformed
+
+    private void LessonFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LessonFilterActionPerformed
+        // TODO add your handling code here:
+        if (evtEnabled == true) {
+            if (LessonFilter.getSelectedIndex() > 0) {
+                this.wheres[2] = "lessons.name ='" + LessonFilter.getSelectedItem().toString() + "'";
+                this.UpdateTable();
+            } else if (LessonFilter.getSelectedIndex() == 0) {
+                this.wheres[2] = "";
+                this.UpdateTable();
+            }
+        }
+    }//GEN-LAST:event_LessonFilterActionPerformed
 
     /**
      * @param args the command line arguments
@@ -293,8 +282,10 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     private void UpdateTable() {
+        evtEnabled = false;
         ((DefaultTableModel) ScoreTable.getModel()).setRowCount(0);
         String[] newRow = new String[5];
+
         if (this.StudentFilter.getSelectedIndex() <= 0) {
             this.StudentFilter.removeAllItems();
             this.StudentFilter.addItem("Все");
@@ -349,6 +340,7 @@ public class MainFrame extends javax.swing.JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        evtEnabled = true;
     }
 
     private void addRow(String[] data) {
@@ -369,7 +361,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

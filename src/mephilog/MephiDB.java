@@ -28,7 +28,8 @@ public class MephiDB {
 
         try {
             conn = DriverManager.getConnection("jdbc:mysql://" + this.dbip + "/mephi?"
-                    + "user=" + this.login + "&password=" + this.password);
+                    + "user=" + this.login + "&password=" + this.password
+                    + "&useUnicode=yes&characterEncoding=UTF-8");
             this.conn = conn;
         } catch (SQLException ex) {
             System.out.println("SQLException: " + ex.getMessage());
