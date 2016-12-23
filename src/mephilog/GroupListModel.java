@@ -12,10 +12,12 @@ import java.util.ArrayList;
  * @author vlad
  */
 public class GroupListModel {
+    Integer id;
     String title;
-    ArrayList<String> students;
+    ArrayList<StudentsListModel> students;
     
-    public void GroupListModel(String title) {
-        
+    public GroupListModel(Integer id, String title) {
+        this.id = id;
+        this.title = title;
     }
 }
