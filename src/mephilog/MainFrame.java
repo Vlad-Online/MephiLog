@@ -5,15 +5,10 @@
  */
 package mephilog;
 
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComboBox;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
 /**
  *
@@ -54,8 +49,12 @@ public class MainFrame extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("MephiLog 1.0");
+        setLocationByPlatform(true);
         setMinimumSize(new java.awt.Dimension(790, 530));
 
         StudentFilter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Все", " " }));
@@ -90,14 +89,14 @@ public class MainFrame extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ФИО", "Группа", "Предмет", "Количество баллов", "Дата"
+                "ФИО", "Группа", "Предмет", "Количество баллов", "Дата", "ИД"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, true, false
+                false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -112,6 +111,11 @@ public class MainFrame extends javax.swing.JFrame {
         jScrollPane1.setViewportView(ScoreTable);
 
         jButton1.setText("Группы");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Предметы");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -131,6 +135,20 @@ public class MainFrame extends javax.swing.JFrame {
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
+            }
+        });
+
+        jButton3.setText("Добавить оценку");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        jButton6.setText("Удалить оценку");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
             }
         });
 
@@ -161,7 +179,9 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
                     .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -183,7 +203,13 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(jButton4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton5)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton6)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jScrollPane1))
                 .addGap(19, 19, 19))
         );
@@ -193,10 +219,14 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        this.setVisible(false);
+        new LessonsEditor().setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
+        this.setVisible(false);
+        new StudentsEditor().setVisible(true);
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -246,6 +276,31 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_LessonFilterActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+        new GroupsEditor().setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        this.setEnabled(false);
+        new Adder().setVisible(true);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+        int row = ScoreTable.getSelectedRow();
+        if (row != -1) {
+            String id = ScoreTable.getValueAt(row, 5).toString();
+            String queryStr = "DELETE FROM scores WHERE id = " + id;
+            int rs = MephiLog.db.updateQuery(queryStr);
+            if (rs > 0) {
+                this.UpdateTable();
+            }
+        }
+    }//GEN-LAST:event_jButton6ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -281,10 +336,10 @@ public class MainFrame extends javax.swing.JFrame {
         });
     }
 
-    private void UpdateTable() {
+    public void UpdateTable() {
         evtEnabled = false;
         ((DefaultTableModel) ScoreTable.getModel()).setRowCount(0);
-        String[] newRow = new String[5];
+        String[] newRow = new String[6];
 
         if (this.StudentFilter.getSelectedIndex() <= 0) {
             this.StudentFilter.removeAllItems();
@@ -306,7 +361,7 @@ public class MainFrame extends javax.swing.JFrame {
         }
         String wheresStr = String.join(" AND ", wheresAL);
 
-        String queryStr = "SELECT students.name,groups.name,lessons.name,score,date FROM mephi.scores "
+        String queryStr = "SELECT students.name,groups.name,lessons.name,score,date, scores.id FROM mephi.scores "
                 + "join students on (students.id = student_id) "
                 + "join lessons on (lessons.id = lesson_id) "
                 + "join groups on (groups.id = group_id) ";
@@ -335,6 +390,7 @@ public class MainFrame extends javax.swing.JFrame {
                 }
                 newRow[3] = rs.getString("score");
                 newRow[4] = rs.getString("date");
+                newRow[5] = rs.getString("id");
                 this.addRow(newRow);
             }
         } catch (Exception e) {
@@ -345,8 +401,12 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void addRow(String[] data) {
         DefaultTableModel model = (DefaultTableModel) ScoreTable.getModel();
-        model.addRow(new Object[]{data[0], data[1], data[2], data[3], data[4]
+        model.addRow(new Object[]{data[0], data[1], data[2], data[3], data[4], data[5]
         });
+    }
+
+    public void setItEnabled(boolean en) {
+        this.setEnabled(en);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -356,8 +416,10 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> StudentFilter;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
